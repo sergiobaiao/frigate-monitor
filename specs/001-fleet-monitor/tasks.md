@@ -12,12 +12,12 @@
 - [x] T006 Docker Compose dev (postgres:16 + redis:7, healthchecks) → `docker-compose.yml`. App/worker containers ficam p/ Fase 12.
 - [x] T007 CI GitHub Actions (`.github/workflows/ci.yml`): install+typecheck+lint+test.
 
-## Fase 1 — Banco de dados
-- [ ] T010 Prisma init + datasource Postgres → verify: `prisma migrate` aplica.
-- [ ] T011 Schema: User, ServerGroup, Server, Secret → verify: migration + client gerado.
-- [ ] T012 Schema: CheckRun, Event, Notification, AuditLog → verify: migration.
-- [ ] T013 Schema: CameraStat, DiskStat + índices do plan §5 → verify: índices presentes.
-- [ ] T014 [P] Seed de dev (usuário admin, 1 servidor exemplo sem segredo real) → verify: seed roda.
+## Fase 1 — Banco de dados ✅ CONCLUÍDA
+- [x] T010 Prisma 7 + `prisma.config.ts` + `@prisma/adapter-pg` (driver adapter — Prisma 7 WASM) → `prisma migrate dev` aplica.
+- [x] T011 Schema: User/ServerGroup/Server/Secret (+ enums Role/ServerType/Severity/SecretKind) → migration + client em `src/generated/prisma`.
+- [x] T012 Schema: CheckRun/Event/Notification/AuditLog (+ enums EventStatus/NotificationStatus) → migration aplicada.
+- [x] T013 Schema: CameraStat/DiskStat + todos os 10 índices do plan.md §5 → verificado via `migration.sql`.
+- [x] T014 Seed (`prisma/seed.ts` via tsx): admin@fleetwatch.local + grupo "Exemplo" + servidor desabilitado → idempotente, roda limpo.
 
 ## Fase 2 — Crypto & Auth
 - [ ] T020 `core/crypto` envelope AES-256-GCM (encrypt/decrypt + keyVersion) → verify: unit round-trip + tamper detection (TDD).

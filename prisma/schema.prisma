@@ -1,0 +1,281 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums  (spec.md RN-Severidade + RF-Cadastro)
+// ---------------------------------------------------------------------------
+
+enum Role {
+  admin
+  operator
+  viewer
+}
+
+enum ServerType {
+  ubuntu
+  haos
+}
+
+enum Severity {
+  ok
+  warning
+  critical
+  unknown
+  resolved
+}
+
+enum EventStatus {
+  open
+  resolved
+}
+
+enum NotificationStatus {
+  sent
+  failed
+  retrying
+}
+
+enum SecretKind {
+  ssh_key
+  ssh_password
+  ha_token
+  frigate_token
+  notify_telegram
+  notify_whatsapp
+}
+
+// ---------------------------------------------------------------------------
+// Users & Auth  (T021 Fase 2 — schema pronto aqui)
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  role         Role       @default(viewer)
+  createdAt    DateTime   @default(now())
+
+  auditLogs    AuditLog[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Server groups  (RF-02)
+// ---------------------------------------------------------------------------
+
+model ServerGroup {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  servers   Server[]
+
+  @@map("server_groups")
+}
+
+// ---------------------------------------------------------------------------
+// Servers  (RF-03)
+// channels  — JSON array: ["telegram","whatsapp"]
+// thresholds — JSON object: { warnPct, critPct, minFreePct, emergencyPct,
+//               staleFrameIntervals, minRetentionDays }
+// ---------------------------------------------------------------------------
+
+model Server {
+  id          String      @id @default(cuid())
+  groupId     String?
+  name        String
+  type        ServerType
+  host        String
+  sshPort     Int?        @default(22)
+  haPort      Int?        @default(8123)
+  frigatePort Int?        @default(5000)
+  intervalSec Int         @default(300)
+  minSeverity Severity    @default(warning)
+  enabled     Boolean     @default(true)
+  channels    Json        @default("[]")
+  thresholds  Json        @default("{}")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  group       ServerGroup? @relation(fields: [groupId], references: [id])
+  secrets     Secret[]
+  checkRuns   CheckRun[]
+  events      Event[]
+  cameraStats CameraStat[]
+  diskStats   DiskStat[]
+
+  @@index([enabled])
+  @@map("servers")
+}
+
+// ---------------------------------------------------------------------------
+// Secrets  (RF-03 + constitution P2 — never in plaintext)
+// ciphertext/iv/tag all base64-encoded; keyVersion ties to rotation
+// ---------------------------------------------------------------------------
+
+model Secret {
+  id          String     @id @default(cuid())
+  serverId    String
+  kind        SecretKind
+  ciphertext  String
+  iv          String
+  tag         String
+  keyVersion  Int        @default(1)
+
+  server      Server     @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@unique([serverId, kind])
+  @@map("secrets")
+}
+
+// ---------------------------------------------------------------------------
+// CheckRun  (RF-20 — raw redacted, one row per check execution)
+// ---------------------------------------------------------------------------
+
+model CheckRun {
+  id            String    @id @default(cuid())
+  serverId      String
+  type          String    // connectivity | frigate_status | storage_net | recordings | disk | camera_image
+  severity      Severity
+  summary       String
+  metrics       Json?
+  stdout        String?
+  stderr        String?
+  exitCode      Int?
+  error         String?
+  durationMs    Int
+  startedAt     DateTime
+  finishedAt    DateTime
+  correlationId String
+
+  server        Server    @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  cameraStats   CameraStat[]
+  diskStats     DiskStat[]
+
+  @@index([serverId, startedAt(sort: Desc)])
+  @@index([correlationId])
+  @@map("check_runs")
+}
+
+// ---------------------------------------------------------------------------
+// Event  (RF-21 — alert state machine: open → resolved)
+// dedupeKey = "<serverId>:<checkType>:<dimension>"
+// unique partial index on open events enforced below via @@index + app-layer
+// (Prisma doesn't support partial unique yet — enforced in EventService)
+// ---------------------------------------------------------------------------
+
+model Event {
+  id             String      @id @default(cuid())
+  serverId       String
+  checkType      String
+  dedupeKey      String
+  severity       Severity
+  status         EventStatus @default(open)
+  openedAt       DateTime    @default(now())
+  resolvedAt     DateTime?
+  lastSeenAt     DateTime    @default(now())
+  lastNotifiedAt DateTime?
+
+  server         Server        @relation(fields: [serverId], references: [id], onDelete: Cascade)
+  notifications  Notification[]
+
+  @@index([serverId, status])
+  @@index([dedupeKey])
+  @@map("events")
+}
+
+// ---------------------------------------------------------------------------
+// Notification  (RF-33 — delivery history; payloadRedacted never contains secrets)
+// ---------------------------------------------------------------------------
+
+model Notification {
+  id               String             @id @default(cuid())
+  eventId          String
+  channel          String             // telegram | whatsapp
+  provider         String             // telegram_bot | evolution | twilio | meta
+  status           NotificationStatus @default(retrying)
+  attempts         Int                @default(0)
+  payloadRedacted  Json
+  error            String?
+  createdAt        DateTime           @default(now())
+
+  event            Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@map("notifications")
+}
+
+// ---------------------------------------------------------------------------
+// AuditLog  (RF-52 — immutable; before/after JSON are redacted)
+// ---------------------------------------------------------------------------
+
+model AuditLog {
+  id       String   @id @default(cuid())
+  actorId  String?
+  action   String
+  entity   String
+  entityId String
+  before   Json?
+  after    Json?
+  at       DateTime @default(now())
+  ip       String?
+
+  actor    User?    @relation(fields: [actorId], references: [id])
+
+  @@index([entity, entityId])
+  @@index([actorId])
+  @@map("audit_logs")
+}
+
+// ---------------------------------------------------------------------------
+// CameraStat  (RF-14 — snapshot per check cycle, for tables + charts)
+// ---------------------------------------------------------------------------
+
+model CameraStat {
+  id            String   @id @default(cuid())
+  checkRunId    String
+  serverId      String
+  cameraName    String
+  storageBytes  BigInt   @default(0)
+  pctTotal      Float    @default(0)
+  bandwidthKbps Float    @default(0)
+  cameraFps     Float    @default(0)
+  detectionFps  Float    @default(0)
+  hasImage      Boolean  @default(false)
+  lastFrameAt   DateTime?
+
+  checkRun      CheckRun @relation(fields: [checkRunId], references: [id], onDelete: Cascade)
+  server        Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([serverId, cameraName, checkRunId])
+  @@map("camera_stats")
+}
+
+// ---------------------------------------------------------------------------
+// DiskStat  (RF-15 — snapshot per check cycle, for disk usage charts)
+// ---------------------------------------------------------------------------
+
+model DiskStat {
+  id         String   @id @default(cuid())
+  checkRunId String
+  serverId   String
+  mount      String
+  totalBytes BigInt
+  freeBytes  BigInt
+  usedBytes  BigInt
+  usedPct    Float
+
+  checkRun   CheckRun @relation(fields: [checkRunId], references: [id], onDelete: Cascade)
+  server     Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@index([serverId, mount, checkRunId])
+  @@map("disk_stats")
+}
