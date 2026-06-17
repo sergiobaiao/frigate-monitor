@@ -1,0 +1,15 @@
+# Default: normalize to LF in repo
+* text=auto eol=lf
+
+# Shell scripts must stay LF on checkout too
+*.sh text eol=lf
+
+# Windows-only files (if any)
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binaries — no line-ending touch
+*.png binary
+*.ico binary
+*.svg binary
+*.gz  binary

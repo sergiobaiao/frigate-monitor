@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+pm=""
+if command -v apt-get >/dev/null 2>&1; then pm="apt"
+elif command -v dnf >/dev/null 2>&1; then pm="dnf"
+elif command -v yum >/dev/null 2>&1; then pm="yum"
+elif command -v zypper >/dev/null 2>&1; then pm="zypper"
+elif command -v apk >/dev/null 2>&1; then pm="apk"
+else echo "unsupported"; exit 0; fi
+mode="${1:---count}"
+apt_count(){ (apt-get update -qq || true) >/dev/null 2>&1; apt list --upgradeable 2>/dev/null | grep -c '\[upgradable from'; }
+apt_security_count(){ apt list --upgradeable 2>/dev/null | grep -i security | wc -l; }
+apt_list(){ apt list --upgradeable 2>/dev/null | sed '1d' | cut -d/ -f1; }
+dnf_count(){ dnf -q check-update || true | awk 'NF' | wc -l; }
+dnf_security_count(){ dnf -q check-update --security || true | awk 'NF' | wc -l; }
+dnf_list(){ dnf -q check-update || true | awk 'NF{print $1}'; }
+yum_count(){ yum -q check-update || true | awk 'NF' | wc -l; }
+yum_security_count(){ if yum -q --security check-update >/dev/null 2>&1; then yum -q --security check-update || true | awk 'NF' | wc -l; else echo 0; fi; }
+yum_list(){ yum -q check-update || true | awk 'NF{print $1}'; }
+zypper_count(){ zypper -q lu | awk 'NR>2 && $0!~/^$/' | wc -l; }
+zypper_security_count(){ if zypper -q lp >/dev/null 2>&1; then zypper -q lp | grep -i security | wc -l; else echo 0; fi; }
+zypper_list(){ zypper -q lu | awk 'NR>2 && $0!~/^$/{print $3}'; }
+apk_count(){ apk version -l '<' 2>/dev/null | awk 'NF' | wc -l; }
+apk_security_count(){ echo 0; }
+apk_list(){ apk version -l '<' 2>/dev/null | awk '{print $1}'; }
+case "$pm" in
+  apt)    case "$mode" in --count) apt_count;; --security-count) apt_security_count;; --list) apt_list;; --timestamp) date +%s;; *) echo 0;; esac ;;
+  dnf)    case "$mode" in --count) dnf_count;; --security-count) dnf_security_count;; --list) dnf_list;; --timestamp) date +%s;; *) echo 0;; esac ;;
+  yum)    case "$mode" in --count) yum_count;; --security-count) yum_security_count;; --list) yum_list;; --timestamp) date +%s;; *) echo 0;; esac ;;
+  zypper) case "$mode" in --count) zypper_count;; --security-count) zypper_security_count;; --list) zypper_list;; --timestamp) date +%s;; *) echo 0;; esac ;;
+  apk)    case "$mode" in --count) apk_count;; --security-count) apk_security_count;; --list) apk_list;; --timestamp) date +%s;; *) echo 0;; esac ;;
+esac
