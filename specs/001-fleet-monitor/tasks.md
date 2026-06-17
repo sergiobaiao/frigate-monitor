@@ -50,10 +50,10 @@
 - [x] T057 Checker disco (RF-15): `df -PB1` Ubuntu / sensores HAOS → DiskStat → verify: %/livre/usado.
 - [x] T058 Checker câmera-com-imagem (RF-16): fps/stale via stats → verify: CA-04 (screenshot 4).
 
-## Fase 6 — Eventos & estado
-- [ ] T060 EventService: máquina open/update/resolved + dedupeKey → verify: transições (CA-05/CA-06) (TDD).
-- [ ] T061 Persistência CheckRun (raw redatado) + correlationId → verify: RF-20, CA-08.
-- [ ] T062 [P] UNKNOWN-escalation por N ciclos (RN-05) → verify: unit.
+## Fase 6 — Eventos & estado ✅ CONCLUÍDA
+- [x] T060 EventService: máquina open/update/resolved + dedupeKey → verify: transições (CA-05/CA-06) (TDD).
+- [x] T061 Persistência CheckRun (raw redatado) + correlationId → verify: RF-20, CA-08.
+- [x] T062 [P] UNKNOWN-escalation por N ciclos (RN-05) → verify: unit.
 
 ## Fase 7 — Scheduler & worker
 - [ ] T070 Redis + BullMQ setup; filas `check` e `notify` → verify: jobs enfileiram/consomem.
