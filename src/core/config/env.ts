@@ -13,6 +13,14 @@ export const envSchema = z.object({
   LOG_LEVEL: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent'])
     .default('info'),
+  SECRET_ENC_KEY: z
+    .string()
+    .min(44, 'Must be base64-encoded 32-byte key (min 44 chars)')
+    .optional(),
+  AUTH_SECRET: z
+    .string()
+    .min(32, 'AUTH_SECRET must be at least 32 chars')
+    .optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
