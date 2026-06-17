@@ -55,12 +55,12 @@
 - [x] T061 Persistência CheckRun (raw redatado) + correlationId → verify: RF-20, CA-08.
 - [x] T062 [P] UNKNOWN-escalation por N ciclos (RN-05) → verify: unit.
 
-## Fase 7 — Scheduler & worker
-- [ ] T070 Redis + BullMQ setup; filas `check` e `notify` → verify: jobs enfileiram/consomem.
-- [ ] T071 Repeatable jobs por servidor no `intervalo`; desabilitado não agenda (RN-10) → verify: agenda dinâmica reflete CRUD.
-- [ ] T072 Lock por servidor (não sobrepor — RN-11) + timeout por tipo (RNF-03) → verify: ciclo lento é pulado/registrado.
-- [ ] T073 Isolamento de falha por servidor (P5) → verify: CA-09.
-- [ ] T074 Worker entrypoint separado + heartbeat → verify: roda standalone.
+## Fase 7 — Scheduler & worker ✅ CONCLUÍDA
+- [x] T070 Redis + BullMQ setup; filas `check` e `notify` → verify: jobs enfileiram/consomem.
+- [x] T071 Repeatable jobs por servidor no `intervalo`; desabilitado não agenda (RN-10) → verify: agenda dinâmica reflete CRUD.
+- [x] T072 Lock por servidor (não sobrepor — RN-11) + timeout por tipo (RNF-03) → verify: ciclo lento é pulado/registrado.
+- [x] T073 Isolamento de falha por servidor (P5) → verify: CA-09.
+- [x] T074 Worker entrypoint separado + heartbeat → verify: roda standalone.
 
 ## Fase 8 — Dashboard & páginas
 - [ ] T080 Visão geral de saúde da frota (contadores + grid) com TanStack Query → verify: RF-40, US3.

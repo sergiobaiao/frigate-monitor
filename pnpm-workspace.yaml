@@ -1,7 +1,9 @@
 onlyBuiltDependencies:
   - '@prisma/engines'
+  - bullmq
   - cpu-features
   - esbuild
+  - msgpackr-extract
   - prisma
   - sharp
   - ssh2
