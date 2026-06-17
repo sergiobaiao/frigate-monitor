@@ -19,19 +19,19 @@
 - [x] T013 Schema: CameraStat/DiskStat + todos os 10 índices do plan.md §5 → verificado via `migration.sql`.
 - [x] T014 Seed (`prisma/seed.ts` via tsx): admin@fleetwatch.local + grupo "Exemplo" + servidor desabilitado → idempotente, roda limpo.
 
-## Fase 2 — Crypto & Auth
-- [ ] T020 `core/crypto` envelope AES-256-GCM (encrypt/decrypt + keyVersion) → verify: unit round-trip + tamper detection (TDD).
-- [ ] T021 Auth.js credentials + hash argon2/bcrypt + sessão → verify: login/logout e2e.
-- [ ] T022 RBAC guard (admin/operator/viewer) para actions/handlers → verify: viewer bloqueado (CA-07).
-- [ ] T023 `withAudit` wrapper → AuditLog redatado → verify: mutação gera audit (CA-07).
-- [ ] T024 [P] Rate limit em auth/mutations → verify: excesso retorna 429.
+## Fase 2 — Crypto & Auth ✅ CONCLUÍDA
+- [x] T020 `core/crypto`: AES-256-GCM + HKDF-SHA256 deriveKey via node:crypto. SECRET_ENC_KEY no env. 10 testes (TDD).
+- [x] T021 Auth.js v5 (next-auth@beta) credentials + bcryptjs (argon2 bloqueado por build nativo). JWT session. sign-in page shadcn.
+- [x] T022 RBAC: requireRole (Server Actions) + guardRoute (Route Handlers) + middleware Next.js. 5 testes hierarquia.
+- [x] T023 withAudit: fire-and-forget audit, redactSecrets em before/after, vi.hoisted() fix. 5 testes.
+- [x] T024 rate-limiter-flexible in-memory: auth 10/15min, mutation 100/min. RateLimitError com retryAfterSec.
 
-## Fase 3 — Cadastro de servidores
-- [ ] T030 Zod schemas de Server/Group + SecretService (grava cifrado) → verify: segredo nunca em claro no DB (unit).
-- [ ] T031 CRUD servidores (Server Actions + UI shadcn) → verify: criar/editar/excluir e2e.
-- [ ] T032 [P] Grupos + agrupamento na UI → verify: servidor aparece no grupo.
-- [ ] T033 [P] Teste de conexão ao salvar (ping/SSH/HA/Frigate) sem persistir segredo em claro → verify: resultado exibido (RF-04).
-- [ ] T034 Página de configurações (servidor/grupos/usuários) → verify: RF-45.
+## Fase 3 — Cadastro de servidores ✅ CONCLUÍDA
+- [x] T030 Zod schemas de Server/Group + SecretService (grava cifrado) → verify: segredo nunca em claro no DB (unit).
+- [x] T031 CRUD servidores (Server Actions + UI shadcn) → verify: criar/editar/excluir e2e.
+- [x] T032 [P] Grupos + agrupamento na UI → verify: servidor aparece no grupo.
+- [x] T033 [P] Teste de conexão ao salvar (ping/SSH/HA/Frigate) sem persistir segredo em claro → verify: resultado exibido (RF-04).
+- [x] T034 Página de configurações (servidor/grupos/usuários) → verify: RF-45.
 
 ## Fase 4 — Integrações (adaptadores)
 - [ ] T040 `integrations/ssh` (ssh2): exec read-only, captura stdout/stderr/exit/timestamp, host-key verify → verify: integração contra container SSH fixture (TDD).
