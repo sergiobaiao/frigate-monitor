@@ -1,0 +1,8 @@
+{
+  "name": "Frigate NVR",
+  "slug": "frigate",
+  "state": "started",
+  "version": "0.17.1",
+  "version_latest": "0.17.1",
+  "update_available": false
+}

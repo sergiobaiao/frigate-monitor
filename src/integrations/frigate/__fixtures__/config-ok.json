@@ -1,0 +1,13 @@
+{
+  "cameras": {
+    "front_door": {
+      "enabled": true,
+      "record": { "enabled": true, "retain": { "days": 7 } }
+    },
+    "backyard": {
+      "enabled": true,
+      "record": { "enabled": true, "retain": { "days": 7 } }
+    }
+  },
+  "record": { "enabled": true, "retain": { "days": 7 } }
+}

@@ -1,0 +1,19 @@
+{
+  "status": "ok",
+  "frigate_running": true,
+  "frigate_version": "0.17.1",
+  "storage": {
+    "path": "/media/frigate",
+    "total_bytes": 500000000000,
+    "used_bytes": 100000000000,
+    "free_bytes": 400000000000,
+    "usage_percent": 20
+  },
+  "cameras": {
+    "front_door": { "fps": 5.0, "last_frame_age_sec": 1.2, "recording": true },
+    "backyard": { "fps": 5.0, "last_frame_age_sec": 0.8, "recording": true }
+  },
+  "network_mounts": [
+    { "name": "backup", "mounted": true, "path": "/mnt/backup" }
+  ]
+}

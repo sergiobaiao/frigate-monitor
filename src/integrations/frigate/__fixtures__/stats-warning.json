@@ -1,0 +1,34 @@
+{
+  "detectors": {
+    "cpu": { "inference_speed": 52.1, "detection_start": 0, "pid": 12345 }
+  },
+  "service": {
+    "uptime": 172800,
+    "version": "0.17.1",
+    "latest_version": "0.17.1",
+    "storage": {
+      "/media/frigate": {
+        "total": 500000000000,
+        "used": 390000000000,
+        "free": 110000000000,
+        "mount_type": "ext4"
+      }
+    }
+  },
+  "front_door": {
+    "camera_fps": 5.0,
+    "process_fps": 4.2,
+    "skipped_fps": 0.8,
+    "detection_fps": 0.6,
+    "pid": 12346,
+    "capture_pid": 12347
+  },
+  "backyard": {
+    "camera_fps": 5.0,
+    "process_fps": 4.7,
+    "skipped_fps": 0.3,
+    "detection_fps": 0.4,
+    "pid": 12348,
+    "capture_pid": 12349
+  }
+}

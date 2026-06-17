@@ -1,0 +1,17 @@
+{
+  "status": "critical",
+  "frigate_running": false,
+  "frigate_version": null,
+  "storage": {
+    "path": "/media/frigate",
+    "total_bytes": 500000000000,
+    "used_bytes": 465000000000,
+    "free_bytes": 35000000000,
+    "usage_percent": 93
+  },
+  "cameras": {
+    "front_door": { "fps": 0, "last_frame_age_sec": 999, "recording": false },
+    "backyard": { "fps": 0, "last_frame_age_sec": 999, "recording": false }
+  },
+  "network_mounts": []
+}

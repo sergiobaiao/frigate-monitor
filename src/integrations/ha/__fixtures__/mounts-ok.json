@@ -1,0 +1,30 @@
+{
+  "mounts": [
+    {
+      "name": "backup",
+      "type": "cifs",
+      "state": "active",
+      "path": "/mnt/backup",
+      "server": "192.168.1.200",
+      "share": "backup",
+      "usage": {
+        "total": 2000000000000,
+        "used": 450000000000,
+        "free": 1550000000000
+      }
+    },
+    {
+      "name": "media",
+      "type": "cifs",
+      "state": "active",
+      "path": "/mnt/media",
+      "server": "192.168.1.200",
+      "share": "media",
+      "usage": {
+        "total": 4000000000000,
+        "used": 1200000000000,
+        "free": 2800000000000
+      }
+    }
+  ]
+}

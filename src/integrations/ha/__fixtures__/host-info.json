@@ -1,0 +1,8 @@
+{
+  "hostname": "homeassistant",
+  "operating_system": "Home Assistant OS 13.1",
+  "kernel": "6.1.21-haos",
+  "disk_total": 250000000000,
+  "disk_used": 45000000000,
+  "disk_free": 205000000000
+}

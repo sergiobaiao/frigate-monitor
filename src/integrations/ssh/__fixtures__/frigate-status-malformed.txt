@@ -1,0 +1,1 @@
+{"status":"warning","frigate_running":true,"storage":{"path":"/media/frigate","total_bytes":500000000000,"used_bytes":-1,"free_bytes":-1,"usage_percent": -},"cameras":{}}

@@ -33,11 +33,11 @@
 - [x] T033 [P] Teste de conexão ao salvar (ping/SSH/HA/Frigate) sem persistir segredo em claro → verify: resultado exibido (RF-04).
 - [x] T034 Página de configurações (servidor/grupos/usuários) → verify: RF-45.
 
-## Fase 4 — Integrações (adaptadores)
-- [ ] T040 `integrations/ssh` (ssh2): exec read-only, captura stdout/stderr/exit/timestamp, host-key verify → verify: integração contra container SSH fixture (TDD).
-- [ ] T041 [P] `integrations/frigate`: cliente tipado + Zod; `/api/version`,`/api/stats`,`/api/config`,recordings → verify: parse de fixtures 0.17.x.
-- [ ] T042 [P] `integrations/ha`: cliente REST + token; states + Supervisor mounts/host info → verify: parse de fixtures.
-- [ ] T043 Fixtures versionadas OK/warning/critical/malformado para os 3 (incl. output do frigate-status.sh do screenshot) → verify: Q2.
+## Fase 4 — Integrações (adaptadores) ✅ CONCLUÍDA
+- [x] T040 `integrations/ssh` (ssh2): exec read-only, captura stdout/stderr/exit/timestamp, host-key verify → verify: integração contra container SSH fixture (TDD).
+- [x] T041 [P] `integrations/frigate`: cliente tipado + Zod; `/api/version`,`/api/stats`,`/api/config`,recordings → verify: parse de fixtures 0.17.x.
+- [x] T042 [P] `integrations/ha`: cliente REST + token; states + Supervisor mounts/host info → verify: parse de fixtures.
+- [x] T043 Fixtures versionadas OK/warning/critical/malformado para os 3 (incl. output do frigate-status.sh do screenshot) → verify: Q2.
 
 ## Fase 5 — Checkers & SeverityEngine
 - [ ] T050 Contrato `Checker` + registry + `ServerContext` → verify: unit.

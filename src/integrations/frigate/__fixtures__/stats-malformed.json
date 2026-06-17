@@ -1,0 +1,16 @@
+{
+  "detectors": { "cpu": { "inference_speed": 45.3, "detection_start": 0 } },
+  "service": {
+    "uptime": 0,
+    "version": "0.17.1",
+    "storage": {
+      "/media/frigate": { "total": -1, "used": -1, "free": -1 }
+    }
+  },
+  "front_door": {
+    "camera_fps": 0,
+    "process_fps": 0,
+    "skipped_fps": 0,
+    "detection_fps": 0
+  }
+}

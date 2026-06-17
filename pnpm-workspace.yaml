@@ -1,6 +1,8 @@
 onlyBuiltDependencies:
   - '@prisma/engines'
+  - cpu-features
   - esbuild
   - prisma
   - sharp
+  - ssh2
   - unrs-resolver
