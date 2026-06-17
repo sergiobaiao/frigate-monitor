@@ -1,6 +1,6 @@
 # Constitution — FleetWatch (Home Assistant / Frigate Fleet Monitor)
 
-> Versão: 1.0.0 · Status: ativo · Método: Spec-Driven Development (GitHub Spec Kit)
+> Versão: 1.1.0 · Status: ativo · Método: Spec-Driven Development (GitHub Spec Kit)
 > Este documento é a **fonte de verdade não negociável**. Spec → Plan → Tasks → Implement.
 > Qualquer PR que viole um princípio MUST ser rejeitado ou justificado em `plan.md` (seção "Complexity Tracking").
 
@@ -25,6 +25,9 @@ Um servidor com falha NUNCA derruba o monitoramento dos demais. Cada check roda 
 
 ### P6 — Notificações são efeito colateral controlado
 Notificação é a ÚLTIMA camada implementada e a mais defensiva: dedupe + cooldown + retry + histórico obrigatórios. Nunca enviar spam; nunca enviar segredo; nunca bloquear o ciclo de checagem aguardando entrega.
+
+### P7 — Todo código novo tem testes automatizados (NON-NEGOTIABLE)
+Toda função, classe, módulo ou comportamento criado MUST ter testes automatizados antes de ser considerado concluído. Sem exceção: adaptadores, parsers, regras de negócio, Server Actions, utilitários. Sem teste = não entregue. Testes devem cobrir pelo menos: caminho feliz, casos de borda e falhas esperadas. Mínimo de 1 teste por função pública; regras de negócio complexas ≥ 90% de cobertura (Q3).
 
 ---
 

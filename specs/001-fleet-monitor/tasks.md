@@ -39,16 +39,16 @@
 - [x] T042 [P] `integrations/ha`: cliente REST + token; states + Supervisor mounts/host info → verify: parse de fixtures.
 - [x] T043 Fixtures versionadas OK/warning/critical/malformado para os 3 (incl. output do frigate-status.sh do screenshot) → verify: Q2.
 
-## Fase 5 — Checkers & SeverityEngine
-- [ ] T050 Contrato `Checker` + registry + `ServerContext` → verify: unit.
-- [ ] T051 `SeverityEngine` com regras RN-Severidade + thresholds por servidor → verify: matriz de casos (TDD, ≥90% — Q3).
-- [ ] T052 Checker conectividade (RF-10) → verify: up/down/latência (CA-09 isolamento).
-- [ ] T053 Checker frigate-status Ubuntu (RF-11): SSH `--json` (métricas) + `--check` (exit 0/1/2 + linhas). Parser tolera `usage_percent: -` (JSON inválido → CRITICAL) e `mounted:false`. → verify: CA-01, CA-02 (screenshot 1) + fixture malformada.
-- [ ] T054 Checker frigate-status HAOS (RF-12): agregador add-on+stats → verify: estados.
-- [ ] T055 Checker storage de rede HAOS (RF-13) → verify: CA-03 (screenshot 2).
-- [ ] T056 Checker gravações Frigate por câmera (RF-14) → CameraStat → verify: totais e por câmera (screenshot 3).
-- [ ] T057 Checker disco (RF-15): `df -PB1` Ubuntu / sensores HAOS → DiskStat → verify: %/livre/usado.
-- [ ] T058 Checker câmera-com-imagem (RF-16): fps/stale via stats → verify: CA-04 (screenshot 4).
+## Fase 5 — Checkers & SeverityEngine ✅ CONCLUÍDA
+- [x] T050 Contrato `Checker` + registry + `ServerContext` → verify: unit.
+- [x] T051 `SeverityEngine` com regras RN-Severidade + thresholds por servidor → verify: matriz de casos (TDD, ≥90% — Q3).
+- [x] T052 Checker conectividade (RF-10) → verify: up/down/latência (CA-09 isolamento).
+- [x] T053 Checker frigate-status Ubuntu (RF-11): SSH `--json` (métricas) + `--check` (exit 0/1/2 + linhas). Parser tolera `usage_percent: -` (JSON inválido → CRITICAL) e `mounted:false`. → verify: CA-01, CA-02 (screenshot 1) + fixture malformada.
+- [x] T054 Checker frigate-status HAOS (RF-12): agregador add-on+stats → verify: estados.
+- [x] T055 Checker storage de rede HAOS (RF-13) → verify: CA-03 (screenshot 2).
+- [x] T056 Checker gravações Frigate por câmera (RF-14) → CameraStat → verify: totais e por câmera (screenshot 3).
+- [x] T057 Checker disco (RF-15): `df -PB1` Ubuntu / sensores HAOS → DiskStat → verify: %/livre/usado.
+- [x] T058 Checker câmera-com-imagem (RF-16): fps/stale via stats → verify: CA-04 (screenshot 4).
 
 ## Fase 6 — Eventos & estado
 - [ ] T060 EventService: máquina open/update/resolved + dedupeKey → verify: transições (CA-05/CA-06) (TDD).
